@@ -1,28 +1,32 @@
 name: Update Media Manifest
 on:
   push:
+    branches:
+      - main
     paths:
       - 'aagaaz/gallery/**'
-  workflow_dispatch:
+  workflow_dispatch: # Isse manual button aa jayega
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Important: Write permission zaruri hai
+      contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Node
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Run Generator
+
+      - name: Run Generator Script
         run: node generate-gallery.js
-      - name: Commit and Push
+
+      - name: Commit and Push Changes
         run: |
           git config --global user.name 'Aagaaz Media Bot'
           git config --global user.email 'media-bot@aagaaz.in'
           git add gallery-manifest.json
           git commit -m "chore: auto-update gallery manifest" || exit 0
           git push
-          
