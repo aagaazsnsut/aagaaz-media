@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'aagaaz/gallery/**'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -24,3 +25,4 @@ jobs:
           git add gallery-manifest.json
           git commit -m "chore: auto-update gallery manifest" || exit 0
           git push
+          
