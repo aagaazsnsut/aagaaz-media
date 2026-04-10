@@ -1,0 +1,26 @@
+name: Update Media Manifest
+on:
+  push:
+    paths:
+      - 'aagaaz/gallery/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Important: Write permission zaruri hai
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Run Generator
+        run: node generate-gallery.js
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'Aagaaz Media Bot'
+          git config --global user.email 'media-bot@aagaaz.in'
+          git add gallery-manifest.json
+          git commit -m "chore: auto-update gallery manifest" || exit 0
+          git push
